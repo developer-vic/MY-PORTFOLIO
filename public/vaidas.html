@@ -73,14 +73,14 @@
         </div>
 
         <div class="demo-section">
-            <div data-role="grid" id="MyGrid" data-sortable="true" data-pageable="{pageSize: 10}" data-scrollable="true"
-                data-persistSelection="true" data-editable="false" data-filterable="{mode: 'row'}" data-resizable="true"
-                data-no-records="{template: 'No ads available.'}"
+            <div data-role="grid" id="MyGrid" data-sortable="{mode: 'mixed', allowUnsort: true, showIndexes: true}"
+                data-pageable="{pageSize: 10}" data-scrollable="true" data-persistSelection="true" data-editable="false"
+                data-filterable="{mode: 'row'}" data-resizable="true" data-no-records="{template: 'No ads available.'}"
                 data-excel="{fileName: 'Finn.xlsx', filterable: true, allPages: true}" data-columns="[ 
-                                { template: kendo.template($('#imgTemplate').html()), 'width': 70, title: 'Image'},
+                                { template: kendo.template($('#imgTemplate').html()), 'width': 70, title: 'Image'}, 
                                 { template: kendo.template($('#detailTemplate').html()),  'width' : 80, title: 'Details' },
                                 {'field': 'spanResult', 'filterable': { cell: {operator: 'contains', suggestionOperator: 'contains'} }, 'width': 50, title: 'Result'},
-                                {'field': 'year' , 'filterable' : { cell: {operator: 'contains', suggestionOperator: 'contains' } }, 'width' : 50, 'title' : 'Year' },
+                                {'field': 'year', 'filterable' : { cell: {operator: 'contains', suggestionOperator: 'contains' } }, 'width' : 50, 'title' : 'Year' },
                                 {'field': 'spanPrice' , 'filterable' : { cell: {operator: 'contains', suggestionOperator: 'contains' } }, 'width' : 50, 'title' : 'Price' },
                                 {'field': 'spanCharges' , 'filterable' : { cell: {operator: 'contains', suggestionOperator: 'contains' } }, 'width' : 50, 'title' : 'Charges' },
                                 {'field': 'mileage' , 'filterable' : { cell: {operator: 'contains', suggestionOperator: 'contains' } }, 'width' : 50, 'title' : 'Kilometer' },
@@ -142,7 +142,33 @@
                             viewModel.set("AgentDataSource", new kendo.data.DataSource(
                                 {
                                     data: json,
-                                    pageSize: 10
+                                    pageSize: 10,
+                                    schema: {
+                                        model: {
+                                            id: "ad_id",
+                                            fields: {
+                                                spanResult: {
+                                                    type: "number",
+                                                    // parse: function (value) {
+                                                    //     return kendo.toString(value, "##,#.##").replace(/,/g, " ");
+                                                    //     //return kendo.parseDate(value, "yyyy-MM-dd");
+                                                    // }
+                                                },
+                                                spanCharges: {
+                                                    type: "number",
+                                                    parse: function (value) {
+                                                        return kendo.toString(value, "##,#.##").replace(/,/g, " ");
+                                                    }
+                                                },
+                                                spanPrice: {
+                                                    type: "number",
+                                                    parse: function (value) {
+                                                        return kendo.toString(value, "##,#.##").replace(/,/g, " ");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }));
                         });
                     }
