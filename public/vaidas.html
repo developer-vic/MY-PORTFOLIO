@@ -3,7 +3,8 @@
 
 <head>
     <!-- favicon  -->
-    <link rel="shortcut icon" href="img/thumbnail.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/thumb.png" type="image/x-icon">
+    <title>Vaidas</title>
     <style>
         html {
             font-size: 14px;
@@ -28,7 +29,7 @@
         }
 
         input[type=text] {
-            width: 450px;
+            width: 800px;
             padding: 12px 20px;
             margin: 5px 15px;
             display: inline-block;
@@ -60,6 +61,8 @@
         <div style="margin-bottom: 30px;text-align: center;">
             <label>Enter maximum result amount to search</label>
             <input type="number" data-bind="value: maxResultValue" placeholder="100000" />
+            <label>Enter maximum number of page(s) to search</label>
+            <input type="number" data-bind="value: pageNo" placeholder="1" />
             <br>
             <label>Enter url to search</label>
             <input type="text" data-bind="value: urlToSearch"
@@ -100,7 +103,7 @@
 
         <script>
             var viewModel = kendo.observable({
-                maxResultValue: '', urlToSearch: '',
+                maxResultValue: '', urlToSearch: '', pageNo: '',
                 AgentDataSource: new kendo.data.DataSource(
                     {
                         data: [],
@@ -110,7 +113,7 @@
             kendo.bind($("#example"), viewModel);
 
             function FetchDataWithMaxResult() {
-                if (viewModel.get("maxResultValue") == '' || viewModel.get("urlToSearch") == '')
+                if (viewModel.get("maxResultValue") == '' || viewModel.get("urlToSearch") == '' || viewModel.get("pageNo") == '')
                     return;
 
                 let headers = new Headers();
@@ -129,7 +132,8 @@
                     headers: headers,
                     body: JSON.stringify({
                         maxAmt: viewModel.get("maxResultValue"),
-                        url: viewModel.get("urlToSearch")
+                        url: viewModel.get("urlToSearch"),
+                        pageNo: viewModel.get("pageNo")
                     })
                 }).then(res => {
                     window.kendo.ui.progress($("#example"), false);
